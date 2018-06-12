@@ -26,6 +26,9 @@
 #ifndef OPT
 #define OPT 0
 #endif
+//ここを変えれば関数が変わります
+#define DIVFUNC bignum_div ## 3
+
 
 //====================================================================
 //  大域宣言
@@ -67,7 +70,7 @@ int main(int argc,string*argv)
     bignum_output(n2);
 
     //----  計算処理
-    flag = bignum_div3(n1,n2,&r1,&r2);
+    flag = DIVFUNC(n1,n2,&r1,&r2);
     //----  出力処理
 
     if(flag){
