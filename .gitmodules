@@ -1,0 +1,3 @@
+[submodule "report1/oji3/tools/unchi"]
+	path = report1/oji3/tools/unchi
+	url = https://github.com/pekko1215/unchiBuri.git
