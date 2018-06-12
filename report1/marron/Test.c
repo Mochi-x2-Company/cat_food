@@ -66,6 +66,8 @@ int main(void)
         default:
             break;
     }
+    bignum_output(n1);
+    bignum_output(n2);
 
     //----  計算処理
     switch ( sw ) {
