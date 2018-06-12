@@ -40,16 +40,22 @@ Bool bignum_mlt(BigNum b1, BigNum b2, BigNum *b0)
     int k1, k2;    // 反復変数
 
     //----  事前処理
-    bignum_init(b0, 0, 0);                            // 計算結果の初期化
-    if ( b1.nsz + b2.nsz > NMX ) {
-        printf("NMX: %d\n", b1.nsz + b2.nsz);
+    
+    //if ( b1.nsz + b2.nsz > NMX ) {
+    //    printf("NMX: %d\n", b1.nsz + b2.nsz);
+    //    return FALSE; 
+    //}    // 計算範囲の吟味
+    if ( b1.dsz + b2.dsz >= NMX*WID ) {
+        printf("NMX: %d\n", b1.dsz + b2.dsz);
         return FALSE; 
     }    // 計算範囲の吟味
-    
+    bignum_init(b0, 0, 0);                            // 計算結果の初期化
 
+    
     //----  畳込による計算処理
     for ( k1 = 0; k1 < b1.nsz; k1++ ) { 
-        for ( k2 = 0; k2 < b2.nsz; k2++ ) { 
+        for ( k2 = 0; k2 < b2.nsz; k2++ ) {     
+            b0->count++;
             b0->node[k1+k2] += b1.node[k1] * b2.node[k2];    // 節同士の乗算と加算
         }
     }
@@ -146,19 +152,34 @@ Bool bignum_pow2(BigNum b1, int e, BigNum *b0)
     // 計算処理は簡単だが，範囲超過の判定が必要
 }
 
+Bool bignum_pow3(BigNum b1, int e, BigNum *b0) {
+
+    bignum_init(b0, 1, 0);    // 結果*b0を1に初期化
+
+    //----  二分法による累乗計算
+    while ( e > 0 ) {
+        if ( e%2 == 0 ) {    // 指数eの奇偶で場合分け
+            if ( bignum_sq3(&b1) ) { e /= 2; } else { return FALSE; }
+        } else { 
+            if ( bignum_mlt(*b0, b1, b0) ) { e--; } else { return FALSE; }
+        }
+    }
+    return TRUE;    // 正常に処理完了
+    // 計算処理は簡単だが，範囲超過の判定が必要
+}
+
+
 //--------------------------------------------------------------------
 //  多倍長整数の二乗更新
 //--------------------------------------------------------------------
 
 Bool bignum_sq(BigNum *b)
 {
-   int s = 1;
-   if ( b->nsz * 2 > NMX ) { return FALSE; }    // 桁溢れ
-   //----  通常の二乗
-   return bignum_sq1(b);
-   //----  カラツバ法
-   //while ( s < b->nsz ) { s *= 2; }    // 有効な節長を2の累乗に制限
-   // return bignum_sq2(b, s);
+    int s = 1;
+    //if ( b->nsz * 2 >= NMX ) { return FALSE; }    // 桁溢れ
+    if (b->dsz * 2 > NMX*WID) { return FALSE; }
+    //----  通常の二乗
+    return bignum_sq1(b);
 }
 
 //--------------------------------------------------------------------
@@ -220,6 +241,16 @@ Bool bignum_sq2(BigNum *b0, int s)
 
     //----  事後処理
     return TRUE;               // 正常に処理完了
+}
+
+Bool bignum_sq3(BigNum *b) {
+    int s = 1;
+
+    if ( b->dsz * 2 > NMX * WID ) { return FALSE; }
+
+    while ( s < b->nsz ) { s *=2; }
+    
+    return bignum_sq2(b, s);
 }
 
 //--------------------------------------------------------------------

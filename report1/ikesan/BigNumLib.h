@@ -44,6 +44,7 @@
 //--------------------------------------------------------------------
 
 #include <stdio.h>
+#include <time.h>
 
 //--------------------------------------------------------------------
 //  定数定義マクロ
@@ -53,7 +54,6 @@
 #define  RAD  100000000    // 基数
 #define  WID          8    // 各節の桁数
 #define  TEN         10    // 10
-#define _ope          0
 //--------------------------------------------------------------------
 //  データ型名定義
 //--------------------------------------------------------------------
@@ -65,6 +65,7 @@ struct _BigNum {
   long long int nsz;         // 節数
   long long int dsz;         // 桁数
   long long int node[NMX];   // 各節の値
+  int count;
 };
 
 
@@ -77,7 +78,9 @@ struct _BigNum {
 //--------------------------------------------------------------------
 
 //--  多倍長整数の入力
-Bool bignum_input(BigNum *n);
+Bool bignum_input(BigNum *b, int u, int a);
+
+Bool bignum_input2(BigNum *b);
 
 //--  多倍長整数の出力
 void bignum_output(const BigNum n);
@@ -157,6 +160,9 @@ Bool bignum_pow1(BigNum b1, int e, BigNum *b0);
 //--  二分法による多倍長整数の累乗
 Bool bignum_pow2(BigNum b1, int e, BigNum *b0);
 
+//-- カラツバ法による多倍長整数の累乗
+Bool bignum_pow3(BigNum b1, int e, BigNum *b0);
+
 //--  多倍長整数の二乗更新
 Bool bignum_sq(BigNum *b);
 
@@ -165,6 +171,8 @@ Bool bignum_sq1(BigNum *b0);
 
 //--  多倍長整数の二乗更新(カラツバ法による自己代入)
 Bool bignum_sq2(BigNum *b0, int s);
+
+Bool bignum_sq3(BigNum *b);
 
 //--------------------------------------------------------------------
 //  関数宣言  多倍長整数の除算
