@@ -84,10 +84,10 @@ void bignum_output(const BigNum b)
 {
     int p = b.nsz-1;                 // 最上位節
     printf("%3d : ", b.nsz);
-    printf("%8d ", b.node[p]);       // 最上位桁の出力(0無)
+    printf("%8lld ", b.node[p]);       // 最上位桁の出力(0無)
 
     while ( --p >= 0 ) {             // 下位桁の出力(0付)
-        printf("%08d ", b.node[p]);    // 途中桁の0は出力
+        printf("%08lld ", b.node[p]);    // 途中桁の0は出力
     }
     puts("");                        // 出力後の改行
 }

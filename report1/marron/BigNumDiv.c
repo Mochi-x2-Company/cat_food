@@ -74,7 +74,7 @@ Bool bignum_div0(BigNum b1, BigNum b2, int *a3, BigNum *b4)
 //  多倍長÷多倍長＝単倍長‥多倍長 (二分法)
 //--------------------------------------------------------------------
 
-Bool bignum_div1(BigNum b1, BigNum b2, int *a3, BigNum *b4) 
+Bool bignum_div1(BigNum b1, BigNum b2, int *a3, BigNum *b4)
 {
     //----  局所宣言
     int low = 0;      // 下端値

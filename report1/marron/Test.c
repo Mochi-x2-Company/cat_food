@@ -4,7 +4,7 @@
 //--------------------------------------------------------------------
 //  BigNum  Test.c
 //  ソース
-//  Windows MinGW GCC 5.3.0
+//  Windows WSL Ubuntu 16.04 GCC 5.4.0
 //--------------------------------------------------------------------
 //  Marron Akanishi
 //  2018.06.12  v1.0
@@ -31,6 +31,8 @@
 //  大域宣言
 //====================================================================
 
+int count = 0;
+
 //--------------------------------------------------------------------
 //  関数宣言
 //--------------------------------------------------------------------
@@ -45,6 +47,8 @@ int main(void)
     //----  局所宣言
     BigNum n0;        // 加減乗算や累乗の結果変数
     BigNum n1, n2;    // 入力変数
+    BigNum n3, n4;    // 除算における整商と剰余
+    int a1, a2, a3, a4;
     int e;            // 累乗の指数
     Bool flag;        // 結果の吟味
     int sw = OPT;
@@ -53,49 +57,73 @@ int main(void)
     // 第1項の入力
     bignum_input(&n1);
     // 第2項の入力
-    switch(sw){
-        case 0:
-        case 1:
-        case 2:
-            scanf("%d", &e);
-            break;
-        case 3:
-        case 4:
-            bignum_input(&n2);
-            break;
-        default:
-            break;
+    if(sw <= 2){
+        scanf("%d", &e);
+    }else{
+        bignum_input(&n2);
     }
     bignum_output(n1);
-    bignum_output(n2);
+    //bignum_output(n2);
 
     //----  計算処理
     switch ( sw ) {
         case 0: 
-            //puts("累乗(素朴法)");
+            // 累乗(素朴法)
             flag = bignum_pow1(n1, e, &n0);
             break;
         case 1:
-            //puts("累乗(二乗法)");
+            // 累乗(二乗法)
             flag = bignum_pow2(n1, e, &n0);
             break;
         case 2:
-            //puts("累乗(カラツバ法)");
+            // 累乗(カラツバ法)
             flag = bignum_pow3(n1, e, &n0);
             break;
         case 3:
-            //puts("ブレンドの算法")
-            flag = bignum_gcd1(n1, n2, &n0);
+            // 多÷多＝単‥多 (素朴法)
+            flag = bignum_div0(n1, n2, &a3, &n4);
+            bignum_init(&n3, a3, 0);
             break;
         case 4:
-            //puts("ユークリッドの互除法")
+            // 多÷多＝単‥多 (二分法)
+            flag = bignum_div1(n1, n2, &a3, &n4);
+            bignum_init(&n3, a3, 0);
+            break;
+        case 5:
+            // 多÷単＝多‥単 (商立法)
+            a2 = n2.node[0];
+            flag = bignum_div2(n1, a2, &n3, &a4);
+            bignum_init(&n4, a4, 0);
+            break;
+        case 6:
+            // 多÷多＝多‥多 (商立法)
+            flag = bignum_div3(n1, n2, &n3, &n4);
+            break;
+        case 7:
+            // 多÷多＝多‥多 (二分法)
+            flag = bignum_div4(n1, n2, &n3, &n4);
+            break;
+        case 8:
+            // ブレンドの算法
+            flag = bignum_gcd1(n1, n2, &n0);
+            break;
+        case 9:
+            // ユークリッドの互除法
             flag = bignum_gcd2(n1, n2, &n0);
             break;
     }
 
     //----  出力処理
     if(flag){
-        bignum_output(n0);    // 整商の出力
+        if(sw <= 2){
+            printf("%d\n", count);
+        }
+        if(sw >= 3 && sw <= 7){
+            bignum_output(n3);
+            bignum_output(n4);
+        }else{
+            bignum_output(n0);
+        }
     }else{
         puts("Error");
     }
