@@ -101,7 +101,8 @@ Bool bignum_scl(BigNum *b0, int a)
 Bool bignum_pow(BigNum b1, int e, BigNum *b0) 
 {
     // return bignum_pow1(b1, e, b0);    // 素朴法による実装
-    return bignum_pow2(b1, e, b0);    // 二乗法による実装
+    // return bignum_pow2(b1, e, b0);    // 二乗法による実装
+    return FALSE;
 }
 
 //--------------------------------------------------------------------
@@ -115,6 +116,7 @@ Bool bignum_pow1(BigNum b1, int e, BigNum *b0)
 
     //----  素朴法の計算処理
     while ( e > 0 ) {
+        count++;
         if ( bignum_mlt(*b0, b1, b0) ) { e--; continue; }
         return FALSE;
     }
@@ -132,6 +134,7 @@ Bool bignum_pow2(BigNum b1, int e, BigNum *b0)
 
     //----  二分法による累乗計算
     while ( e > 0 ) {
+        count++;
         if ( e%2 == 0 ) {    // 指数eの奇偶で場合分け
             if ( bignum_sq1(&b1) ) { e /= 2; } else { return FALSE; }
         } else { 
@@ -157,6 +160,7 @@ Bool bignum_pow3(BigNum b1, int e, BigNum *b0)
             while ( s < b1.nsz ) { s *= 2; };       
             if ( bignum_sq2(&b1, s) ) { e /= 2; } else { return FALSE; }
         } else { 
+            count++;
             if ( bignum_mlt(*b0, b1, b0) ) { e--; } else { return FALSE; }
         }
     }
@@ -207,7 +211,7 @@ Bool bignum_sq2(BigNum *b0, int s)
     //--  中位節の二乗の計算
     if ( c0.nsz <= s ) { 
         bignum_sq2(&c0, s);          // 中位節の二乗
-    } else { bignum_sq1(&c0); }    // 中位節の二乗(繰上りがあるため)
+    } else { bignum_sq1(&c0); count++; }    // 中位節の二乗(繰上りがあるため)
   
     //--  中位節への減算
     bignum_sub(c0, c1, &c0);    // 中位節から下位節の減算
