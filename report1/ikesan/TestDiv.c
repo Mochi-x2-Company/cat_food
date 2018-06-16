@@ -89,7 +89,7 @@ int main(void)
         break;
     case 2:
         puts("多÷単＝多‥単 (商立法)");
-        a2 = n2.node[0];
+        //printf("a2: %d\n", a2);
         flag = bignum_div2(n1, a2, &n3, &a4);
         bignum_init(&n4, a4, 0);
         if ( ! flag ) { puts("Error"); break; }

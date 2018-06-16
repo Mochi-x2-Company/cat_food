@@ -47,7 +47,7 @@
 //  本体処理
 //====================================================================
 
-int main(int argc, char *argv[]) 
+int main(void) 
 {
     //----  局所宣言
     FILE *fp;
@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
     BigNum n1, n2;    // 入力変数
     BigNum n3, n4;    // 除算における整商と剰余
     int a1, a2, a3, a4;
-    int a, u;
     int e;            // 累乗の指数
     Bool flag;        // 結果の吟味
     int sw;
@@ -71,27 +70,21 @@ int main(int argc, char *argv[])
 
     //----  事前処理
     printf("0:乗算 1:累乗 2:累乗 3:二乗 4:カラツバ ? "); 
-    sw = atoi(argv[1]);
-    printf("%d", sw);
-    //scanf("%d", &sw);
+    scanf("%d", &sw);
+    printf("%d\n", sw);
 
     //----  入力処理
-    puts(""); 
-    u = atoi(argv[2]);
-    a = atoi(argv[3]);
-    printf("U1 N1[] = ? ??  "); bignum_input(&n1, u, a);    // 第1項の入力
+    puts("");
+    printf("U1 N1[] = ? ??  "); bignum_input(&n1);    // 第1項の入力
     if ( sw == 0 ) { 
-        printf("U2 N2[] = ? ??  "); bignum_input(&n2, u, a);    // 第2項の入力
+        printf("U2 N2[] = ? ??  "); bignum_input(&n2);    // 第2項の入力
     } else if ( sw <= 2 ) {
         printf("E = ? ");
-        e = atoi(argv[4]);
-        printf("%d\n", e);
-        //scanf("%d", &e); 
+        scanf("%d", &e);
+        printf("%d\n", e); 
     } else if ( sw == 4 ) {
         printf("S = ? ");
-        e = atoi(argv[4]);
-        printf("%d", e);
-        //scanf("%d", &e); 
+        scanf("%d", &e); 
     }
 
     //----  計算処理
@@ -206,6 +199,7 @@ int main(int argc, char *argv[])
         
         start = clock();
 
+        if (n1.dsz * 2 > NMX*WID) { puts("Error"); break; }
         flag = bignum_sq1(&n0);
         
         end = clock();

@@ -51,7 +51,7 @@
 //--------------------------------------------------------------------
 
 #define  NMX        100    // 多倍長の節数
-#define  RAD  100000000    // 基数
+#define  RAD   100000000   // 基数
 #define  WID          8    // 各節の桁数
 #define  TEN         10    // 10
 //--------------------------------------------------------------------
@@ -78,9 +78,9 @@ struct _BigNum {
 //--------------------------------------------------------------------
 
 //--  多倍長整数の入力
-Bool bignum_input(BigNum *b, int u, int a);
+Bool bignum_input(BigNum *b);
 
-Bool bignum_input2(BigNum *b);
+Bool bignum_input2(BigNum *b, int u, int a);
 
 //--  多倍長整数の出力
 void bignum_output(const BigNum n);
