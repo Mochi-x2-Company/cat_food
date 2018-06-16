@@ -117,9 +117,15 @@ Bool bignum_div2(BigNum b1, int a2, BigNum *b3, int *a4)
 
     //----  除算処理
     for ( k = b1.nsz-1; k >= 0; k-- ) {    // 上位節から計算
-        *a4 *= RAD; *a4 += b1.node[k];       // 一時的な被除数(繰下りを含む)
+        //printf("node: %d\n", b1.node[k]);
+        *a4 *= RAD;
+        //printf("a41: %d\n", *a4);
+        *a4 += b1.node[k];       // 一時的な被除数(繰下りを含む)
+        //printf("a42: %d\n", *a4);
         b3->node[k] = *a4 / a2;              // 整商の節値
+        //printf("%d\n", b3->node[k]);
         *a4 %= a2;                           // 剰余の更新
+        //printf("a43: %d\n", *a4);
     }
 
     //----  事後処理

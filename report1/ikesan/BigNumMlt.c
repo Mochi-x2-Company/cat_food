@@ -50,12 +50,11 @@ Bool bignum_mlt(BigNum b1, BigNum b2, BigNum *b0)
         return FALSE; 
     }    // 計算範囲の吟味
     bignum_init(b0, 0, 0);                            // 計算結果の初期化
-
     
     //----  畳込による計算処理
+    b0->count++;
     for ( k1 = 0; k1 < b1.nsz; k1++ ) { 
-        for ( k2 = 0; k2 < b2.nsz; k2++ ) {     
-            b0->count++;
+        for ( k2 = 0; k2 < b2.nsz; k2++ ) {
             b0->node[k1+k2] += b1.node[k1] * b2.node[k2];    // 節同士の乗算と加算
         }
     }
@@ -159,7 +158,7 @@ Bool bignum_pow3(BigNum b1, int e, BigNum *b0) {
     //----  二分法による累乗計算
     while ( e > 0 ) {
         if ( e%2 == 0 ) {    // 指数eの奇偶で場合分け
-            if ( bignum_sq3(&b1) ) { e /= 2; } else { return FALSE; }
+            if ( bignum_sq(&b1) ) { e /= 2; } else { return FALSE; }
         } else { 
             if ( bignum_mlt(*b0, b1, b0) ) { e--; } else { return FALSE; }
         }
@@ -177,9 +176,11 @@ Bool bignum_sq(BigNum *b)
 {
     int s = 1;
     //if ( b->nsz * 2 >= NMX ) { return FALSE; }    // 桁溢れ
-    if (b->dsz * 2 > NMX*WID) { return FALSE; }
+    //if (b->dsz * 2 > NMX*WID) { return FALSE; }
     //----  通常の二乗
-    return bignum_sq1(b);
+    //return bignum_sq1(b);
+    while ( s < b->nsz ) { s *= 2; }    // 有効な節長を2の累乗に制限
+    return bignum_sq2(b, s);
 }
 
 //--------------------------------------------------------------------
@@ -225,7 +226,9 @@ Bool bignum_sq2(BigNum *b0, int s)
     //--  中位節の二乗の計算
     if ( c0.nsz <= s ) { 
         bignum_sq2(&c0, s);          // 中位節の二乗
-    } else { bignum_sq1(&c0); }    // 中位節の二乗(繰上りがあるため)
+    } else { 
+        bignum_sq1(&c0);
+    }    // 中位節の二乗(繰上りがあるため)
   
     //--  中位節への減算
     bignum_sub(c0, c1, &c0);    // 中位節から下位節の減算

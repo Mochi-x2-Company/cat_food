@@ -43,7 +43,35 @@
 //  多倍長整数の入力
 //--------------------------------------------------------------------
 
-Bool bignum_input(BigNum *b, int u, int a) 
+Bool bignum_input(BigNum *b) 
+{
+    //----  局所宣言
+    int u;    // 多倍長の節数
+    int a;    // 一時変数
+    int k;    // 反復変数
+
+    //----  初期処理
+    bignum_init(b, 0, 0);    // 結果を0に初期化
+
+    //----  節数の入力と確認
+    scanf("%d", &u);                    // 節数の入力
+    printf("%d\n", u);
+    if ( u > NMX ) { return FALSE; }    // 範囲超過なら打切
+
+    //----  各節の入力と確認
+    for ( k = u-1; k >= 0; k-- ) {         // 上位節から
+        scanf("%d", &a);                     // 入力値の各格納
+        printf("%d\n", a);
+        // 二倍長や負数も許容(入力の利便性のため)
+        if ( a < 0 ) { return FALSE; }       // 節値が負数なら打切
+        if ( a >= RAD ) { return FALSE; }    // 節値が基数の以上なら打切
+        b->node[k] = a;                      // 構造体の配列メンバに節値を格納
+    }
+
+    //----  事後処理
+    return bignum_normal(b);    // 節値と節長・桁長の正規化
+}
+Bool bignum_input2(BigNum *b, int u, int a) 
 {
     //----  局所宣言
     //int u;    // 多倍長の節数
@@ -163,7 +191,7 @@ Bool bignum_carry(BigNum *b0)
 Bool bignum_size(BigNum *b) 
 {
     //----  局所宣言
-    int v;    // 最上位の節値
+    long long int v;    // 最上位の節値
     int k;    // 反復変数
 
     //----  節数の計算と格納
