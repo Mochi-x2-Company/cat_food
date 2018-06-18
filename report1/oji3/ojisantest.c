@@ -66,8 +66,8 @@ int main(int argc,string*argv)
         bignum_input(&n2);
     }
 
-    bignum_output(n1);
-    bignum_output(n2);
+    //bignum_output(n1);
+    //bignum_output(n2);
 
     //----  計算処理
     flag = DIVFUNC(n1,n2,&r1,&r2);
