@@ -51,7 +51,7 @@ void shell_sort(Data arr[], int n, int *ct_c, int *ct_s)
   int p;
 
   //----  間隔列の初期値(1,4,13,40,121,‥)
-  while ( gap < (n/2) ) { 
+  while ( gap <= (n/2) ) { 
     gap *= cnt; gap++; 
   }
 
@@ -61,7 +61,7 @@ void shell_sort(Data arr[], int n, int *ct_c, int *ct_s)
     //----  シェルソートの各ラン(指定間隔での挿入法)
     for ( p = 0; p < gap; p++ ) { 
       shell_sort_run(arr, p, n, gap, ct_c, ct_s);
-      proc_view(arr, n, *ct_c, *ct_s);    // 整列過程の表示
+      //proc_view(arr, n, *ct_c, *ct_s);    // 整列過程の表示
     }
   }
 }
@@ -140,7 +140,7 @@ void quick_sort_rec(Data arr[], int low, int hig,
   Data key = arr[k];      // 基準値
 
   //----  部分列の範囲の表示
-  printf("[%2d %2d]\n", low, hig);
+  //printf("[%2d %2d]\n", low, hig);
 
   //----  再帰終了
   if ( low  >= hig ) { return; }
@@ -164,7 +164,7 @@ void quick_sort_rec(Data arr[], int low, int hig,
   }
 
   //----  整列過程の表示
-  proc_view(arr, n, *ct_c, *ct_s);
+  //proc_view(arr, n, *ct_c, *ct_s);
 
   //----  再帰呼出
   if ( low < j ) { quick_sort_rec(arr, low, j, n, ct_c, ct_s); }
@@ -262,9 +262,9 @@ void merge_sort(Data arr[], int n, int *ct_c, int *ct_s)
   //----  マージソートの再帰処理の呼出
   merge_sort_rec(arr, 0, n-1, tmp, n, ct_c, ct_s);
   //----  部分列の範囲の表示
-  printf("[%2d %2d]\n", 0, n-1);
+  //printf("[%2d %2d]\n", 0, n-1);
   //----  整列過程の初期状態の表示
-  proc_view(arr, n, *ct_c, *ct_s);
+  //proc_view(arr, n, *ct_c, *ct_s);
 }
 
 //--------------------------------------------------------------------
@@ -284,15 +284,15 @@ void merge_sort_rec(Data arr[], int low, int hig, Data tmp[],
   if ( low < j ) { 
     merge_sort_rec(arr, low, j, tmp, n, ct_c, ct_s);    // 左部分列
     //----  整列過程の表示
-    printf("[%2d %2d]\n", low, j);
-    proc_view(arr, n, *ct_c, *ct_s);
+    //printf("[%2d %2d]\n", low, j);
+    //proc_view(arr, n, *ct_c, *ct_s);
   }
   j++;
   if ( j < hig ) { 
     merge_sort_rec(arr, j, hig, tmp, n, ct_c, ct_s);    // 右部分列
     //----  整列過程の表示
-    printf("[%2d %2d]\n", j, hig);
-    proc_view(arr, n, *ct_c, *ct_s);
+    //printf("[%2d %2d]\n", j, hig);
+    //proc_view(arr, n, *ct_c, *ct_s);
   }
   //----  事前処理
   for ( k = low; k < j; k++ ) { tmp[k-low] = arr[k]; }
@@ -387,13 +387,13 @@ void heap_sort(Data arr[], int n, int *ct_c, int *ct_s)
   for ( k = n/2; k >= 0; k-- ) {
     heap_sort_rec(arr, k, n-1, ct_c, ct_s);    // ヒープ木の篩落し
   }
-  proc_view(arr, n, *ct_c, *ct_s);             // 整列過程の表示
+  //proc_view(arr, n, *ct_c, *ct_s);             // 整列過程の表示
 
   //----  ヒープ木からの整列
   for ( k = n-1; k > 0; k-- ) {  
     arr_swap_ct(arr, 0, k, ct_s);              // 最大要素を整列済の部分列に移動
     heap_sort_rec(arr, 0, k-1, ct_c, ct_s);    // ヒープ木の篩落し
-    proc_view(arr, n, *ct_c, *ct_s);           // 整列過程の表示
+    //proc_view(arr, n, *ct_c, *ct_s);           // 整列過程の表示
   }
 }
 
