@@ -37,21 +37,21 @@ int main(int argc, char *argv[])
   //----  算法の指定
   if ( argc == 2 ) { sw = atoi(argv[1]); }
   if ( sw < 4 || sw > 8 ) {
-    puts("実行時引数の不正"); 
-    puts("4: シェル法  5: コーム法  6: クイック法  7: マージ法  8: ヒープ法"); 
+    //puts("実行時引数の不正"); 
+    //puts("4: シェル法  5: コーム法  6: クイック法  7: マージ法  8: ヒープ法"); 
     return 0;
   }
 
   //----  配列の長さと各要素の入力
-  printf("データ数 = ?  ");
+  //printf("データ数 = ?  ");
   scanf("%d", &n);
-  printf("配列要素 : ?  ");
+  //printf("配列要素 : ?  ");
   input_arr(seq, n);
-  puts("");
+  //puts("");
 
   //----  初期表示
-  puts("比較  交換 :  処理過程");
-  proc_view(seq, n, ct_cmp, ct_swp);
+  //puts("比較  交換 :  処理過程");
+  //proc_view(seq, n, ct_cmp, ct_swp);
 
   //----  整列算法
   switch ( sw ) {
@@ -78,7 +78,9 @@ int main(int argc, char *argv[])
   }
 
   //----  整列結果の出力
-  puts("");
-  printf("%s  比較 %3d回  交換 %3d回\n", str, ct_cmp, ct_swp);
+  //puts("");
+  printf("%3d, %3d\n", ct_cmp, ct_swp);
+  //printf("%s  比較 %3d回  交換 %3d回\n", str, ct_cmp, ct_swp);
+
   return 0;
 }
